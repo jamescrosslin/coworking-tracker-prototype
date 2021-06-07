@@ -18,5 +18,8 @@
     "nodemon": "^2.0.7",
     "sequelize": "^6.6.2",
     "sqlite3": "^5.0.2"
+  },
+  "devDependencies": {
+    "eslint": "^7.28.0"
   }
 }
