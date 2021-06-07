@@ -19,7 +19,7 @@ app.route('/').get((request, response) => response.send('Welcome to my api!'));
 const tasksRoute = require('./routes/tasks');
 app.use('/tasks', tasksRoute);
 
-app.use((err, req, res, next) => {
+app.use((err, _req, res, _next) => {
   const errors = err.validationErrors || err.errors || ['No further information'];
   res.status(err.status || 500).json({
     message: err.message,

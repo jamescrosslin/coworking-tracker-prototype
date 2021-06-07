@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const { Task } = require('../model');
 
 module.exports = {
@@ -6,18 +7,24 @@ module.exports = {
     res.render('tasks', { tasks });
   },
   createTask: async (req, res) => {
-    await Task.create(req.query);
-    res.status(201).json({ message: 'Your task is submitted! Get to work!' });
+    let message = 'You must !finish your open task',
+      status = 401;
+    if (req.task) {
+      await Task.create(req.query);
+      message = 'Your task is submitted! Get to work!';
+      status = 201;
+    }
+    res.status(status).json({ message });
   },
-  finishTask: async ({ query: { user } }, res) => {
-    const task = await Task.findOne({
-      where: {
-        user,
-        finished: false,
-      },
-    });
-    await task.update({ finished: true });
-    res.status(201).json({ message: 'Nailed it! Look at you go!' });
+  finishTask: async (req, res) => {
+    let message = 'You have no open tasks',
+      status = 401;
+    if (req.task) {
+      await req.task.update({ finished: true });
+      message = 'Nailed it! Look at you go!';
+      status = 201;
+    }
+    res.status(status).json({ message });
   },
   deleteTask: async (req, res) => {
     const task = await Task.findOne({
@@ -25,12 +32,23 @@ module.exports = {
         id: req.query.id,
       },
     });
-    const admins = ['thedabolical', 'izzy42oo'];
-    if (
-      true //[req.body.user, ...admins].some((user) => user === task.user)
-    )
-      await task.destroy();
+    const admins = ['theDabolical', 'izzy42oo'];
+    if ([req.body.user, ...admins].some((user) => user === task.user)) await task.destroy();
     else res.status(401).json({ message: 'Unauthorized' });
     res.status(204).json({ message: 'Your task has been removed' });
+  },
+  getUnfinishedTask: async (req, res, next) => {
+    const task = await Task.findOne({
+      where: {
+        user: req.query.user,
+        finished: { [Op.or]: [false, null] },
+      },
+    });
+    if (task) req.task = task;
+    next();
+  },
+  resetAllTasks: async (req, res) => {
+    await Task.sync({ force: true });
+    res.status(201).json({ message: 'All tasks reset.' });
   },
 };

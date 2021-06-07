@@ -1,5 +1,12 @@
 const express = require('express');
-const { getTasks, createTask, deleteTask, finishTask } = require('../controller/tasks');
+const {
+  getTasks,
+  createTask,
+  deleteTask,
+  finishTask,
+  getUnfinishedTask,
+  resetAllTasks,
+} = require('../controller/tasks');
 
 function asyncHandler(cb) {
   return async (req, res, next) => {
@@ -23,9 +30,10 @@ function asyncHandler(cb) {
 }
 
 const router = express.Router();
-router.use('/createTask', asyncHandler(createTask));
-router.use('/finishTask', asyncHandler(finishTask));
-router.use('deleteTask', asyncHandler(deleteTask));
+router.use('/createTask', getUnfinishedTask, asyncHandler(createTask));
+router.use('/finishTask', getUnfinishedTask, asyncHandler(finishTask));
+router.use('/deleteTask', asyncHandler(deleteTask));
+router.use('/resetAll', resetAllTasks);
 
 router.use(express.static('public'));
 
