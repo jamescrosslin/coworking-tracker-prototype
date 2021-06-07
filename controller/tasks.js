@@ -7,18 +7,14 @@ module.exports = {
     res.render('tasks', { tasks });
   },
   createTask: async (req, res) => {
-    let message = 'You must finish your open task';
-    let status = 401;
     if (!req.task) {
       await Task.create(req.query);
-      message = 'Your task is submitted! Get to work!';
-      status = 201;
-    }
-    res.status(status).json({ message });
+      res.status(201).json({ message: 'Your task is submitted! Get to work!' });
+    } else res.status(200).json({ message: 'You must finish your open task first' });
   },
   finishTask: async (req, res) => {
     let message = 'You have no open tasks',
-      status = 401;
+      status = 200;
     if (req.task) {
       await req.task.update({ finished: true });
       message = 'Nailed it! Look at you go!';
@@ -32,10 +28,14 @@ module.exports = {
         id: req.query.id,
       },
     });
-    const admins = ['theDabolical', 'izzy42oo'];
-    if ([req.body.user, ...admins].some((user) => user === task.user)) await task.destroy();
-    else res.status(401).json({ message: 'Unauthorized' });
-    res.status(204).json({ message: 'Your task has been removed' });
+    const admins = ['theDabolical', 'izzy42oo', 'crosssh'];
+    let destruction;
+    if ([req.body.user, ...admins].some((user) => user === task.user))
+      destruction = await task.destroy();
+    else res.status(200).json({ message: 'Unauthorized. You can only delete your own tasks.' });
+
+    if (destruction) res.status(204).json({ message: 'Your task has been removed' });
+    else res.json({ message: "Didn't delete. Double check your task's number id." });
   },
   getUnfinishedTask: async (req, res, next) => {
     const task = await Task.findOne({
