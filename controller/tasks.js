@@ -33,7 +33,7 @@ module.exports = {
     if ([req.query.user, ...admins].some((user) => user === task.user)) await task.destroy();
     else res.status(200).json({ message: 'Unauthorized. You can only delete your own tasks.' });
 
-    res.status(204).json({ message: 'Your task has been removed' });
+    res.status(201).json({ message: 'Your task has been removed' });
   },
   getUnfinishedTask: async (req, res, next) => {
     const task = await Task.findOne({
@@ -46,6 +46,8 @@ module.exports = {
     next();
   },
   resetAllTasks: async (req, res) => {
+    if (req.query.user !== 'theDabolical')
+      res.json({ message: 'Only the stream owner can delete all tasks.' });
     await Task.sync({ force: true });
     res.status(201).json({ message: 'All tasks reset.' });
   },
