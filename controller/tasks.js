@@ -29,13 +29,11 @@ module.exports = {
       },
     });
     const admins = ['theDabolical', 'izzy42oo', 'crosssh'];
-    let destruction;
-    if ([req.body.user, ...admins].some((user) => user === task.user))
-      destruction = await task.destroy();
+    if (!task) res.json({ message: 'Could not find that task. Double check your post number.' });
+    if ([req.query.user, ...admins].some((user) => user === task.user)) await task.destroy();
     else res.status(200).json({ message: 'Unauthorized. You can only delete your own tasks.' });
 
-    if (destruction) res.status(204).json({ message: 'Your task has been removed' });
-    else res.json({ message: "Didn't delete. Double check your task's number id." });
+    res.status(204).json({ message: 'Your task has been removed' });
   },
   getUnfinishedTask: async (req, res, next) => {
     const task = await Task.findOne({
