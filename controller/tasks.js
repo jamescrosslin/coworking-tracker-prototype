@@ -29,9 +29,16 @@ module.exports = {
       },
     });
     const admins = ['theDabolical', 'izzy42oo', 'crosssh'];
-    if (!task) res.json({ message: 'Could not find that task. Double check your post number.' });
-    if ([req.query.user, ...admins].some((user) => user === task.user)) await task.destroy();
-    else res.status(200).json({ message: 'Unauthorized. You can only delete your own tasks.' });
+
+    if (!task) {
+      res.json({ message: 'Could not find that task. Double check your post number.' });
+    }
+
+    if (req.query.user === task.user || admins.includes(req.query.user)) {
+      await task.destroy();
+    } else {
+      res.status(200).json({ message: 'Unauthorized. You can only delete your own tasks.' });
+    }
 
     res.status(201).json({ message: 'Your task has been removed' });
   },
