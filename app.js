@@ -10,13 +10,14 @@ app.use(cors());
 app.use(logger('dev'));
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.set('view engine', 'ejs');
 
 app.route('/').get((request, response) => response.send('Welcome to my api!'));
 
-const postsRoute = require('./routes/posts');
-app.use('/posts', postsRoute);
+const tasksRoute = require('./routes/tasks');
+app.use('/tasks', tasksRoute);
 
 app.use((err, req, res, next) => {
   const errors = err.validationErrors || err.errors || ['No further information'];

@@ -23,14 +23,12 @@ function asyncHandler(cb) {
 }
 
 const router = express.Router();
+router.use('/createTask', asyncHandler(createPost));
+router.use('/finishTask', asyncHandler(finishPost));
+router.use('deleteTask', asyncHandler(deletePost));
 
 router.use(express.static('public'));
 
-router
-  .route('/')
-  .get(asyncHandler(getPosts))
-  .post(asyncHandler(createPost))
-  .put(asyncHandler(finishPost))
-  .delete(asyncHandler(deletePost));
+router.use('/', asyncHandler(getPosts));
 
 module.exports = router;
