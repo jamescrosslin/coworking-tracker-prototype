@@ -8,13 +8,13 @@
     <title>Document</title>
   </head>
   <body>
-    <h1>Posts</h1>
+    <h1>Tasks</h1>
     <ul>
-      <% for (let post of posts) { %>
-      <li class= <%= post.finished && 'done' %>>
-        <span> <%= post.id %> </span>
-        <span> - <%= post.user %> </span>
-        <span> - <%= post.post %> </span>
+      <% for (let task of tasks) { %>
+      <li class= <%= task.finished && 'done' %>>
+        <span> <%= task.id %> </span>
+        <span> - <%= task.user %> </span>
+        <span> - <%= task.task %> </span>
       </li>
       <% } %>
     </ul>

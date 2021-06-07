@@ -7,7 +7,7 @@ const sequelize = new Sequelize({
 
 const { Model } = require('sequelize');
 
-class Post extends Model {}
+class Task extends Model {}
 
 (async () => {
   // creates requirement props for each field passed in
@@ -31,12 +31,12 @@ class Post extends Model {}
     }, {});
   }
 
-  const requiredOptions = makeRequireOptions('user', 'post');
+  const requiredOptions = makeRequireOptions('user', 'task');
 
-  await Post.init(
+  await Task.init(
     {
       user: { type: Sequelize.DataTypes.STRING, ...requiredOptions.user },
-      post: { type: Sequelize.DataTypes.STRING, ...requiredOptions.post },
+      task: { type: Sequelize.DataTypes.STRING, ...requiredOptions.task },
       finished: { type: Sequelize.DataTypes.BOOLEAN },
     },
     { sequelize },
@@ -55,4 +55,4 @@ class Post extends Model {}
   }
 })();
 
-module.exports = { sequelize, Post };
+module.exports = { sequelize, Task };
