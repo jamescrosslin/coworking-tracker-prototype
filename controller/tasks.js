@@ -7,9 +7,9 @@ module.exports = {
     res.render('tasks', { tasks });
   },
   createTask: async (req, res) => {
-    let message = 'You must !finish your open task',
-      status = 401;
-    if (req.task) {
+    let message = 'You must finish your open task';
+    let status = 401;
+    if (!req.task) {
       await Task.create(req.query);
       message = 'Your task is submitted! Get to work!';
       status = 201;
