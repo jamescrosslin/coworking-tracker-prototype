@@ -14,7 +14,9 @@ app.use(express.urlencoded({ extended: true }));
 
 app.set('view engine', 'ejs');
 
-app.route('/').get((request, response) => response.send('Welcome to my api!'));
+app.use(express.static('public'));
+
+app.route('/').get((req, res) => res.render('tasks'));
 
 const tasksRoute = require('./routes/tasks');
 app.use('/tasks', tasksRoute);

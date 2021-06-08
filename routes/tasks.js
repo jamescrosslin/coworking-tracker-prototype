@@ -30,7 +30,7 @@ function asyncHandler(cb) {
 }
 const router = express.Router();
 
-router.get('/', express.static('public'), asyncHandler(getTasks));
+router.get('/', asyncHandler(getTasks));
 
 router.get('/createTask', getUnfinishedTask, asyncHandler(createTask));
 router.get('/finishTask', getUnfinishedTask, asyncHandler(finishTask));
