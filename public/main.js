@@ -1,4 +1,4 @@
-const events = new EventSource(`http://${process.env.API_URL}/tasks`);
+const events = new EventSource(`https://coworking-tracker.herokuapp.com/tasks`);
 
 events.onmessage = (event) => {
   const parsedData = JSON.parse(event.data);
