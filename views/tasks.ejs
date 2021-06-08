@@ -8,8 +8,8 @@
     <title>Document</title>
   </head>
   <body>
-    <h1>Tasks</h1>
-    <ul>
+    <h1>!Task for options</h1>
+    <ul id="taskList">
       <% for (let task of tasks) { %>
       <li class= <%= task.finished && 'done' %>>
         <span> <%= task.id %> </span>
