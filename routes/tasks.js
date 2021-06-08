@@ -28,15 +28,13 @@ function asyncHandler(cb) {
     }
   };
 }
-
 const router = express.Router();
-router.use('/createTask', getUnfinishedTask, asyncHandler(createTask));
-router.use('/finishTask', getUnfinishedTask, asyncHandler(finishTask));
-router.use('/deleteTask', asyncHandler(deleteTask));
-router.use('/resetAll', resetAllTasks);
 
-router.use(express.static('public'));
+router.get('/', express.static('public'), asyncHandler(getTasks));
 
-router.use('/', asyncHandler(getTasks));
+router.get('/createTask', getUnfinishedTask, asyncHandler(createTask));
+router.get('/finishTask', getUnfinishedTask, asyncHandler(finishTask));
+router.get('/deleteTask', asyncHandler(deleteTask));
+router.get('/resetAll', resetAllTasks);
 
 module.exports = router;
