@@ -1,4 +1,4 @@
-const events = new EventSource('http://localhost:3000/tasks');
+const events = new EventSource(`http://${process.env.API_URL}/tasks`);
 
 events.onmessage = (event) => {
   const parsedData = JSON.parse(event.data);
