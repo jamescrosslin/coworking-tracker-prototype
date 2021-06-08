@@ -45,7 +45,7 @@ class Task extends Model {}
     await sequelize.authenticate();
     console.log('Connection has been established');
     try {
-      await sequelize.sync({ force: true });
+      await sequelize.sync();
       console.log('Sync succeeded');
     } catch (err) {
       console.log("Database couldn't be synced", err);
