@@ -4,8 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon"
   },
   "keywords": [],
   "author": "",
@@ -17,8 +16,7 @@
     "morgan": "^1.10.0",
     "nodemon": "^2.0.7",
     "sequelize": "^6.6.2",
-    "sqlite3": "^5.0.2",
-    "validator": "^10.11.0"
+    "sqlite3": "^5.0.2"
   },
   "devDependencies": {
     "eslint": "^7.28.0"

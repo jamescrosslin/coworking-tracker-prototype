@@ -12,8 +12,8 @@ module.exports = {
       return {
         id,
         finished,
-        user: user.replace(/[<>/\\()]/g, ' '),
-        task: task.replace(/[<>/\\()]/g, ' '),
+        user: user.replace(/[<>/\\();]/g, ' '),
+        task: task.replace(/[<>/\\();]/g, ' '),
       };
     });
 
