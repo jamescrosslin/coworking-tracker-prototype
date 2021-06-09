@@ -2,7 +2,6 @@ const events = new EventSource(`https://coworking-tracker.herokuapp.com/tasks`);
 
 events.onmessage = (event) => {
   const parsedData = JSON.parse(event.data);
-  console.log(parsedData);
 
   document.getElementById('taskList').innerHTML = parsedData.reduce(
     (html, task) =>

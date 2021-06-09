@@ -1,6 +1,7 @@
 const { Op } = require('sequelize');
 const { Task } = require('../model');
 const { sendTaskUpdates } = require('../middleware');
+const validator = require('validator');
 
 let clients = [];
 
@@ -12,8 +13,8 @@ module.exports = {
       return {
         id,
         finished,
-        user,
-        task,
+        user: validator.blacklist(user, '[<>/\\()]'),
+        task: validator.blacklist(task, '[<>/\\();^]'),
       };
     });
 
