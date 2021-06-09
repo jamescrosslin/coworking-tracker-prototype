@@ -1,6 +1,7 @@
 const { Op } = require('sequelize');
 const { Task } = require('../model');
 const { sendTaskUpdates } = require('../middleware');
+const validator = require('validator');
 
 let clients = [];
 
@@ -8,6 +9,13 @@ module.exports = {
   clients,
   getTasks: async (req, res) => {
     const tasks = await Task.findAll();
+    const sanitizedTasks = tasks.map((task) => {
+      return {
+        ...task,
+        user: validator.escape(task.user),
+        task: validator.escape(task.task),
+      };
+    });
 
     res.status(200).set({
       'Content-Type': 'text/event-stream',
@@ -15,7 +23,7 @@ module.exports = {
       'Cache-control': 'no-cache',
     });
 
-    const data = `data: ${JSON.stringify(tasks)}\n\n`;
+    const data = `data: ${JSON.stringify(sanitizedTasks)}\n\n`;
 
     res.write(data);
 

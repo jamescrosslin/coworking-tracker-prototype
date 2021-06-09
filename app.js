@@ -23,7 +23,7 @@ app.use('/tasks', tasksRoute);
 
 app.use((err, _req, res, _next) => {
   const errors = err.validationErrors || err.errors || ['No further information'];
-  res.status(err.status || 500).json({
+  res.status(200).json({
     message: err.message,
     error: errors,
   });
