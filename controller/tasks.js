@@ -1,7 +1,6 @@
 const { Op } = require('sequelize');
 const { Task } = require('../model');
 const { sendTaskUpdates } = require('../middleware');
-const validator = require('validator');
 
 let clients = [];
 
@@ -13,8 +12,8 @@ module.exports = {
       return {
         id,
         finished,
-        user: validator.escape(user),
-        task: validator.escape(task),
+        user,
+        task,
       };
     });
 
