@@ -1,5 +1,6 @@
 const { Op } = require('sequelize');
 const { Task } = require('../model');
+const { sanitizeData } = require('../middleware/sanitize');
 const { sendTaskUpdates } = require('../middleware');
 
 let clients = [];
@@ -8,14 +9,7 @@ module.exports = {
   clients,
   getTasks: async (req, res) => {
     const tasks = await Task.findAll();
-    const sanitizedTasks = tasks.map(({ id, user, task, finished }) => {
-      return {
-        id,
-        finished,
-        user: user.replace(/[<>/\\();]/g, ' '),
-        task: task.replace(/[<>/\\();]/g, ' '),
-      };
-    });
+    const sanitizedTasks = sanitizeData(tasks);
 
     res.status(200).set({
       'Content-Type': 'text/event-stream',
@@ -67,13 +61,13 @@ module.exports = {
         id: req.query.id,
       },
     });
-    const admins = ['theDabolical', 'izzy42oo', 'crosssh'];
+    const admins = ['thedabolical', 'izzy42oo', 'crosssh', 'darkwiz420'];
 
     if (!task) {
       res.json({ message: 'Could not find that task. Double check your post number.' });
     }
 
-    if (req.query.user === task.user || admins.includes(req.query.user)) {
+    if (req.query.user === task.user || admins.includes(req.query.user.toLowerCase())) {
       await task.destroy();
     } else {
       res.status(200).json({ message: 'Unauthorized. You can only delete your own tasks.' });
