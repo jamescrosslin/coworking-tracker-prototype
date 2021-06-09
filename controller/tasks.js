@@ -9,11 +9,12 @@ module.exports = {
   clients,
   getTasks: async (req, res) => {
     const tasks = await Task.findAll();
-    const sanitizedTasks = tasks.map((task) => {
+    const sanitizedTasks = tasks.map(({ id, user, task, finished }) => {
       return {
-        ...task,
-        user: validator.escape(task.user),
-        task: validator.escape(task.task),
+        id,
+        finished,
+        user: validator.escape(user),
+        task: validator.escape(task),
       };
     });
 
