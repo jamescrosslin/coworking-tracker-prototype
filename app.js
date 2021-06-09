@@ -18,12 +18,6 @@ app.use(express.static('public'));
 
 app.route('/').get((req, res) => res.render('tasks'));
 
-app.use((req, res, next) => {
-  req.query.key !== process.env.API_KEY
-    ? res.json({ message: 'You are not authorized to use this api.' })
-    : next();
-});
-
 const tasksRoute = require('./routes/tasks');
 app.use('/tasks', tasksRoute);
 

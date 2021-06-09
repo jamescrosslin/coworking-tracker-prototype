@@ -32,6 +32,12 @@ const router = express.Router();
 
 router.get('/', asyncHandler(getTasks));
 
+router.use((req, res, next) => {
+  req.query.key !== process.env.API_KEY
+    ? res.json({ message: 'You are not authorized to use this api.' })
+    : next();
+});
+
 router.get('/createTask', getUnfinishedTask, asyncHandler(createTask));
 router.get('/finishTask', getUnfinishedTask, asyncHandler(finishTask));
 router.get('/deleteTask', asyncHandler(deleteTask));
