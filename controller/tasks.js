@@ -67,7 +67,10 @@ module.exports = {
       res.json({ message: 'Could not find that task. Double check your post number.' });
     }
 
-    if (req.query.user === task.user || admins.includes(req.query.user.toLowerCase())) {
+    if (
+      req.query.user.toLowerCase() === task.user.toLowerCase() ||
+      admins.includes(req.query.user.toLowerCase())
+    ) {
       await task.destroy();
     } else {
       res.status(200).json({ message: 'Unauthorized. You can only delete your own tasks.' });
