@@ -1,4 +1,5 @@
 const express = require('express');
+const { checkTimingSafe } = require('./middleware');
 const logger = require('morgan');
 const cors = require('cors');
 const port = process.env.PORT || 3000;
@@ -17,6 +18,8 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 
 app.route('/').get((req, res) => res.render('tasks'));
+
+app.use(checkTimingSafe);
 
 const tasksRoute = require('./routes/tasks');
 app.use('/tasks', tasksRoute);
