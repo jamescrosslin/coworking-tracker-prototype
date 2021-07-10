@@ -19,7 +19,7 @@ app.use(express.static('public'));
 
 app.route('/').get((req, res) => res.render('tasks'));
 
-app.use(checkTimingSafe);
+// app.use(checkTimingSafe);
 
 const tasksRoute = require('./routes/tasks');
 app.use('/tasks', tasksRoute);
