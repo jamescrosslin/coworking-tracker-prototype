@@ -1,5 +1,5 @@
 const express = require('express');
-const { checkTimingSafe } = require('./middleware');
+// const { checkTimingSafe } = require('./middleware');
 const logger = require('morgan');
 const cors = require('cors');
 const port = process.env.PORT || 3000;
