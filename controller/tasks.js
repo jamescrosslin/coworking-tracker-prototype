@@ -37,7 +37,8 @@ module.exports = {
   },
   createTask: async (req, res) => {
     if (!req.task) {
-      await Task.create(req.query);
+      const { user, task } = req.query;
+      await Task.create({ user, task, finished: false });
       const tasks = await Task.findAll();
       sendTaskUpdates(clients, tasks);
       res.status(201).json({ message: 'Your task is submitted! Get to work!' });
@@ -56,15 +57,26 @@ module.exports = {
     res.status(status).json({ message });
   },
   deleteTask: async (req, res) => {
-    const task = await Task.findOne({
-      where: {
-        id: req.query.id,
-      },
-    });
+    let task;
+    const failures = ['undefined', false];
+    if (failures.some((val) => val == req.query.id))
+      task = await Task.findOne({
+        where: {
+          [Op.and]: [{ user: req.query.user }, { finished: false }],
+        },
+      });
+    // use Op.and to make sure both conditions are true
+    else
+      task = await Task.findOne({
+        where: {
+          id: req.query.id,
+        },
+      });
+
     const admins = ['thedabolical', 'izzy42oo', 'crosssh', 'darkwiz420'];
 
     if (!task) {
-      res.json({ message: 'Could not find that task. Double check your post number.' });
+      return res.json({ message: 'Could not find that task. Double check your post number.' });
     }
 
     if (

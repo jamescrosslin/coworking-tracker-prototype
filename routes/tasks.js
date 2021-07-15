@@ -7,6 +7,7 @@ const {
   getUnfinishedTask,
   resetAllTasks,
 } = require('../controller/tasks');
+const { checkTimingSafe } = require('../middleware');
 
 function asyncHandler(cb) {
   return async (req, res, next) => {
@@ -32,11 +33,14 @@ const router = express.Router();
 
 router.get('/', asyncHandler(getTasks));
 
-router.use((req, res, next) => {
-  req.query.key !== process.env.API_KEY
-    ? res.json({ message: 'You are not authorized to use this api.' })
-    : next();
-});
+// legacy code for posterity - replaced by checkTimingSafe middleware
+// router.use((req, res, next) => {
+//   req.query.key !== process.env.API_KEY
+//     ? res.json({ message: 'You are not authorized to use this api.' })
+//     : next();
+// });
+
+router.use(checkTimingSafe);
 
 router.get('/createTask', getUnfinishedTask, asyncHandler(createTask));
 router.get('/finishTask', getUnfinishedTask, asyncHandler(finishTask));
