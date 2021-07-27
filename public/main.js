@@ -16,3 +16,9 @@ events.onmessage = (event) => {
     '',
   );
 };
+
+setInterval(() => {
+  fetch(`${window.location}ping`)
+    .then((res) => res.json())
+    .then(console.log);
+}, 1.8e2);

@@ -17,6 +17,10 @@ app.set('view engine', 'ejs');
 
 app.use(express.static('public'));
 
+app.get('/ping', (req, res) => {
+  res.json({ message: 'pong' });
+});
+
 app
   .route('/')
   .get((req, res) =>
