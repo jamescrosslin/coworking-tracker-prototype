@@ -24,7 +24,7 @@ app.get('/ping', (req, res) => {
 app
   .route('/')
   .get((req, res) =>
-    res.render('tasks', { apiKey: process.env.API_KEY, test: process.env.ENV === 'dev' }),
+    res.render('tasks'),
   );
 
 const tasksRoute = require('./routes/tasks');
