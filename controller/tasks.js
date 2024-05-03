@@ -5,6 +5,8 @@ const { sendTaskUpdates } = require('../middleware');
 
 let clients = [];
 
+const admins = ['moderator', 'owner'];
+
 module.exports = {
   clients,
   getTasks: async (req, res) => {
@@ -73,7 +75,6 @@ module.exports = {
         },
       });
 
-    const admins = ['thedabolical', 'izzy42oo', 'crosssh', 'darkwiz420'];
 
     if (!task) {
       return res.json({ message: 'Could not find that task. Double check your post number.' });
@@ -81,7 +82,7 @@ module.exports = {
 
     if (
       req.query.user.toLowerCase() === task.user.toLowerCase() ||
-      admins.includes(req.query.user.toLowerCase())
+      admins.includes(req.query.userLevel.toLowerCase())
     ) {
       await task.destroy();
     } else {
@@ -102,7 +103,7 @@ module.exports = {
     next();
   },
   resetAllTasks: async (req, res) => {
-    if (req.query.user !== 'theDabolical')
+    if (req.query.userLevel !== 'owner')
       res.json({ message: 'Only the stream owner can delete all tasks.' });
     await Task.sync({ force: true });
 
